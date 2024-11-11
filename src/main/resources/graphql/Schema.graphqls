@@ -1,0 +1,42 @@
+type Centre {
+    id: ID
+    nom: String
+    adresse: String
+    etudiants: [Etudiant]
+}
+
+type Etudiant {
+    id: ID
+    nom: String
+    prenom: String
+    genre: Genre
+    centre: Centre
+}
+
+enum Genre {
+    Homme
+    Femme
+    King
+    Alien
+    Hmmar
+}
+
+type Query {
+    getAllCentres: [Centre]
+    getCentreById(id: ID): Centre
+    getAllEtudiants: [Etudiant]
+    getEtudiantById(id: ID): Etudiant
+}
+
+type Mutation {
+    # Centre Mutations
+    createCentre(nom: String, adresse: String): Centre
+    modifyCentre(id: ID, nom: String, adresse: String): Centre
+    deleteCentre(id: ID): Boolean
+
+    # Etudiant Mutations
+    createEtudiant(nom: String, prenom: String, genre: Genre, centreId: ID): Etudiant
+    modifyEtudiant(id: ID, nom: String, prenom: String, genre: Genre, centreId: ID): Etudiant
+    deleteEtudiant(id: ID): Boolean
+}
+
