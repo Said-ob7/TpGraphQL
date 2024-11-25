@@ -21,6 +21,14 @@ enum Genre {
     Hmmar
 }
 
+input EtudiantDTO {
+    id: ID
+    nom: String
+    prenom: String
+    genre: Genre
+    centreId: ID
+}
+
 type Query {
     getAllCentres: [Centre]
     getCentreById(id: ID): Centre
@@ -35,8 +43,7 @@ type Mutation {
     deleteCentre(id: ID): Boolean
 
     # Etudiant Mutations
-    createEtudiant(nom: String, prenom: String, genre: Genre, centreId: ID): Etudiant
-    modifyEtudiant(id: ID, nom: String, prenom: String, genre: Genre, centreId: ID): Etudiant
+    createEtudiant(input: EtudiantDTO): Etudiant
+    modifyEtudiant(input: EtudiantDTO): Etudiant
     deleteEtudiant(id: ID): Boolean
 }
-
