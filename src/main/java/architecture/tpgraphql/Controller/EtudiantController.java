@@ -35,8 +35,7 @@ public class EtudiantController {
     }
 
     @MutationMapping
-    public Etudiant modifyEtudiant(@Argument EtudiantDTO etudiantDTO) {
-
+    public Etudiant modifyEtudiant(@Argument("input") EtudiantDTO etudiantDTO) {
         return etudiantService.modifyEtudiant(etudiantDTO);
     }
 

@@ -4,6 +4,7 @@ import architecture.tpgraphql.DAO.Centre;
 import architecture.tpgraphql.DAO.Etudiant;
 import architecture.tpgraphql.DAO.Genre;
 import architecture.tpgraphql.DTO.EtudiantDTO;
+import architecture.tpgraphql.Mapping.DtoToEtudiant;
 import architecture.tpgraphql.Repository.CentreRepository;
 import architecture.tpgraphql.Repository.EtudiantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class EtudiantService {
     @Autowired
     private CentreRepository centreRepository;
 
+    @Autowired
+    DtoToEtudiant dtoToEtudiant;
+
     private final Sinks.Many<Etudiant> sink = Sinks.many().multicast().onBackpressureBuffer();
     private final Sinks.Many<String> sinkDelete = Sinks.many().multicast().onBackpressureBuffer();
 
@@ -35,12 +39,13 @@ public class EtudiantService {
 
     public Etudiant createEtudiant(EtudiantDTO etudiantDTO) {
         Etudiant etudiant = new Etudiant();
-        etudiant.setNom(etudiantDTO.getNom());
-        etudiant.setPrenom(etudiantDTO.getPrenom());
-        etudiant.setGenre(Genre.valueOf(etudiantDTO.getGenre()));
+        dtoToEtudiant.toEtudiant(etudiant, etudiantDTO);
+//        etudiant.setNom(etudiantDTO.getNom());
+//        etudiant.setPrenom(etudiantDTO.getPrenom());
+//        etudiant.setGenre(etudiantDTO.getGenre());
 
-        Optional<Centre> centre = centreRepository.findById(etudiantDTO.getCentreId());
-        centre.ifPresent(etudiant::setCentre);
+//        Optional<Centre> centre = centreRepository.findById(etudiantDTO.getCentreId());
+//        centre.ifPresent(etudiant::setCentre);
 
         etudiantRepository.save(etudiant);
         sink.tryEmitNext(etudiant);
@@ -50,13 +55,13 @@ public class EtudiantService {
     public Etudiant modifyEtudiant(EtudiantDTO etudiantDTO) {
         Etudiant etudiant = etudiantRepository.findById(etudiantDTO.getId())
                 .orElseThrow(() -> new RuntimeException("Etudiant not found with id: " + etudiantDTO.getId()));
-
-        etudiant.setNom(etudiantDTO.getNom());
-        etudiant.setPrenom(etudiantDTO.getPrenom());
-        etudiant.setGenre(Genre.valueOf(etudiantDTO.getGenre()));
-
-        Optional<Centre> centre = centreRepository.findById(etudiantDTO.getCentreId());
-        centre.ifPresent(etudiant::setCentre);
+        dtoToEtudiant.toEtudiant(etudiant,etudiantDTO);
+//        etudiant.setNom(etudiantDTO.getNom());
+//        etudiant.setPrenom(etudiantDTO.getPrenom());
+//        etudiant.setGenre(etudiantDTO.getGenre());
+//
+//        Optional<Centre> centre = centreRepository.findById(etudiantDTO.getCentreId());
+//        centre.ifPresent(etudiant::setCentre);
 
         return etudiantRepository.save(etudiant);
     }
