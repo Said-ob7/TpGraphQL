@@ -28,6 +28,10 @@ input EtudiantDTO {
     genre: Genre
     centreId: ID
 }
+type Subscription{
+    etudiantAdded:Etudiant
+    SubDeleteEtudiant:String
+}
 
 type Query {
     getAllCentres: [Centre]
